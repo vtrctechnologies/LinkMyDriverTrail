@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
+/* Self-hosted fonts (bundled with the app, so they load on every device) */
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/caveat";
+
 @theme {
-  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-handwriting: "Caveat", cursive, system-ui;
+  --font-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-handwriting: "Caveat Variable", "Caveat", cursive, system-ui;
   --color-brand-navy: #0E1D38;
   --color-brand-yellow: #F49E12;
 }
