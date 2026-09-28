@@ -30,6 +30,14 @@ const FEATURES = [
   },
 ];
 
+const HANDWRITING = "var(--font-handwriting), 'Caveat', cursive";
+
+/* Shared parallax transform (fed by mouse on desktop, gyroscope on phones) */
+const PARALLAX_STYLE = {
+  transform:
+    "translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0) scale(1.05)",
+};
+
 export default function LinkMyDriverHero() {
   const [active, setActive] = useState(0);
   const heroRef = useRef(null);
@@ -187,9 +195,11 @@ export default function LinkMyDriverHero() {
   };
 
   const current = FEATURES[active];
+  const imgTransition =
+    motion === "active" ? "" : "transition-transform duration-500 ease-out";
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#FAFCFE]">
+    <section className="relative w-full overflow-hidden bg-[#FAFCFE] bg-gradient-to-b from-[#E4F1FD] via-[#FAFCFE] to-[#FAFCFE] md:bg-none">
       <style>{`
         @keyframes lmd-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
         @keyframes lmd-swap { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -204,44 +214,23 @@ export default function LinkMyDriverHero() {
         onPointerLeave={resetPointer}
         className="relative flex min-h-[calc(100dvh-4.5rem)] w-full flex-col justify-between"
       >
-        {/* Background artwork */}
-        <div className="pointer-events-none absolute inset-0 h-full w-full select-none overflow-hidden">
+        {/* Full-bleed background artwork (tablet and up) */}
+        <div className="pointer-events-none absolute inset-0 hidden h-full w-full select-none overflow-hidden md:block">
           <img
             src={bgImage}
             alt="LinkMyDriver car and professional driver illustration"
-            className={`h-full w-full object-cover object-[72%_center] will-change-transform sm:object-[68%_center] md:object-[60%_center] lg:object-right ${
-              motion === "active"
-                ? ""
-                : "transition-transform duration-500 ease-out"
-            }`}
-            style={{
-              transform:
-                "translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0) scale(1.05)",
-            }}
+            className={`h-full w-full object-cover object-[60%_center] will-change-transform lg:object-right ${imgTransition}`}
+            style={PARALLAX_STYLE}
           />
           {/* Readability gradients */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/30 sm:via-white/70 sm:to-transparent lg:via-white/40 lg:w-[62%]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent lg:w-[62%] lg:via-white/40" />
           <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/60 to-transparent lg:hidden" />
         </div>
 
         {/* Content */}
-        <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-1 flex-col justify-between gap-8 px-4 pb-4 pt-6 sm:px-6 sm:pt-8 lg:px-12 lg:pt-10">
-          {/* Top: message */}
+        <div className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-1 flex-col justify-start gap-6 px-4 pb-4 pt-5 sm:px-6 sm:pt-8 md:justify-between md:gap-8 lg:px-12 lg:pt-10">
+          {/* Message */}
           <div className="relative">
-            {/* iOS only: motion sensors need a tap to allow */}
-            {motion === "needs-permission" && (
-              <button
-                type="button"
-                onClick={enableTilt}
-                aria-label="Enable tilt effect"
-                className="lmd-rise absolute right-0 top-0 inline-flex h-9 items-center gap-2 rounded-full border border-[#FCD698] bg-white/80 px-3 text-xs font-bold text-[#0E1D38] shadow-sm outline-none backdrop-blur transition-transform active:scale-95 focus-visible:ring-2 focus-visible:ring-[#F49E12] md:hidden"
-                style={{ "--d": "400ms" }}
-              >
-                <Smartphone className="h-4 w-4 text-[#F49E12]" />
-                <span className="hidden min-[400px]:inline">Enable tilt</span>
-              </button>
-            )}
-
             <div className="flex max-w-2xl flex-col items-start">
               {/* Launching soon status */}
               <div
@@ -271,7 +260,7 @@ export default function LinkMyDriverHero() {
               </h1>
 
               <p
-                className="lmd-rise mt-4 max-w-xl text-pretty text-sm font-medium leading-relaxed text-slate-600 sm:mt-5 sm:text-base lg:text-lg"
+                className="lmd-rise mt-3 max-w-xl text-pretty text-[15px] font-medium leading-relaxed text-slate-600 sm:mt-5 sm:text-base lg:text-lg"
                 style={{ "--d": "180ms" }}
               >
                 Hire trusted local drivers for your trips in your own car
@@ -281,7 +270,7 @@ export default function LinkMyDriverHero() {
 
             {/* Handwritten sticker (tablet and up) */}
             <div
-              className="pointer-events-none absolute right-2 top-0 hidden -rotate-6 select-none transition-transform duration-500 ease-out md:block lg:right-10 lg:top-2"
+              className="pointer-events-none absolute right-2 top-0 hidden select-none transition-transform duration-500 ease-out md:block lg:right-10 lg:top-2"
               style={{
                 transform:
                   "rotate(-6deg) translate3d(calc(var(--px, 0) * 12px), calc(var(--py, 0) * 8px), 0)",
@@ -291,17 +280,13 @@ export default function LinkMyDriverHero() {
                 <div className="text-right">
                   <span
                     className="block text-2xl font-bold tracking-wide text-[#0E1D38] lg:text-3xl xl:text-4xl"
-                    style={{
-                      fontFamily: "var(--font-handwriting), 'Caveat', cursive",
-                    }}
+                    style={{ fontFamily: HANDWRITING }}
                   >
                     Local Drivers
                   </span>
                   <span
                     className="-mt-1 block text-2xl font-bold tracking-wide text-[#0E1D38] lg:text-3xl xl:text-4xl"
-                    style={{
-                      fontFamily: "var(--font-handwriting), 'Caveat', cursive",
-                    }}
+                    style={{ fontFamily: HANDWRITING }}
                   >
                     For Your Next Trip
                   </span>
@@ -336,10 +321,64 @@ export default function LinkMyDriverHero() {
             </div>
           </div>
 
-          {/* Bottom: interactive feature selector */}
+          {/* Mobile artwork card (phones only): crisp, uncovered illustration */}
           <div
-            className="lmd-rise mx-auto w-full max-w-4xl rounded-2xl border border-slate-200/80 bg-white/90 p-2 shadow-[0_10px_30px_-8px_rgba(15,27,51,0.18)] backdrop-blur-md sm:p-3"
-            style={{ "--d": "280ms" }}
+            className="lmd-rise relative max-h-[28rem] min-h-[16rem] flex-1 select-none overflow-hidden rounded-3xl border border-white/80 shadow-[0_18px_40px_-16px_rgba(14,29,56,0.35)] md:hidden"
+            style={{ "--d": "220ms" }}
+          >
+            <img
+              src={bgImage}
+              alt="LinkMyDriver car and professional driver illustration"
+              className={`absolute inset-0 h-full w-full object-cover object-[78%_center] will-change-transform ${imgTransition}`}
+              style={PARALLAX_STYLE}
+            />
+
+            {/* Handwritten note */}
+            <div className="pointer-events-none absolute left-3 top-3 -rotate-3 rounded-xl bg-white/75 px-3 pb-1 pt-1.5 shadow-sm backdrop-blur-sm">
+              <span
+                className="block text-lg font-bold leading-tight text-[#0E1D38] min-[400px]:text-xl"
+                style={{ fontFamily: HANDWRITING }}
+              >
+                Local Drivers
+              </span>
+              <span
+                className="block text-lg font-bold leading-tight text-[#0E1D38] min-[400px]:text-xl"
+                style={{ fontFamily: HANDWRITING }}
+              >
+                For Your Next Trip
+              </span>
+              <svg
+                className="h-2.5 w-full text-[#F49E12]"
+                viewBox="0 0 200 20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeLinecap="round"
+                aria-hidden="true"
+                preserveAspectRatio="none"
+              >
+                <path d="M10 12 Q 100 2 190 14" />
+              </svg>
+            </div>
+
+            {/* iOS only: motion sensors need a tap to allow */}
+            {motion === "needs-permission" && (
+              <button
+                type="button"
+                onClick={enableTilt}
+                aria-label="Enable tilt effect"
+                className="absolute right-3 top-3 inline-flex h-9 items-center gap-2 rounded-full border border-[#FCD698] bg-white/85 px-3 text-xs font-bold text-[#0E1D38] shadow-sm outline-none backdrop-blur transition-transform focus-visible:ring-2 focus-visible:ring-[#F49E12] active:scale-95"
+              >
+                <Smartphone className="h-4 w-4 text-[#F49E12]" />
+                <span className="hidden min-[400px]:inline">Enable tilt</span>
+              </button>
+            )}
+          </div>
+
+          {/* Interactive feature selector */}
+          <div
+            className="lmd-rise relative z-10 mx-auto -mt-14 w-full max-w-4xl rounded-2xl border border-slate-200/80 bg-white/95 p-2 shadow-[0_10px_30px_-8px_rgba(15,27,51,0.18)] backdrop-blur-md sm:p-3 md:mt-0 md:bg-white/90"
+            style={{ "--d": "300ms" }}
           >
             <div
               role="tablist"
