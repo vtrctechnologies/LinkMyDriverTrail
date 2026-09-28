@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Phone } from "lucide-react";
 import logo from "../assets/LOGO.png";
 
-const PHONE_NUMBER = "+91 9423364990";
-const PHONE_HREF = "tel:+919423364990";
+const PHONE_NUMBER = "+91 9022778713";
+const PHONE_HREF = "tel:+919022778713";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

@@ -8,10 +8,10 @@ import {
 } from "lucide-react";
 import logo from "../assets/LOGO.png";
 
-const PHONE_NUMBER = "+91 9423364990";
-const PHONE_HREF = "tel:+919423364990";
+const PHONE_NUMBER = "+91 9022778713";
+const PHONE_HREF = "tel:+919022778713";
 const WHATSAPP_HREF =
-  "https://wa.me/919423364990?text=Hi%2C%20I%20would%20like%20to%20book%20a%20driver%20via%20LinkMyDriver";
+  "https://wa.me/919022778713?text=Hi%2C%20I%20would%20like%20to%20book%20a%20driver%20via%20LinkMyDriver";
 const EMAIL = "team@linkmydriver.com";
 const ADDRESS = "Ratnagiri, Maharashtra 415612";
 const MAP_HREF = "https://maps.google.com/?q=Ratnagiri,+Maharashtra+415612";
